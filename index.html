@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Ashmith | Portfolio</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,700;1,400&family=Clash+Display:wght@400;600;700&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#080a0e;
+  --surface:#0f1117;
+  --surface2:#161820;
+  --border:#1e2130;
+  --border2:#2a2d3e;
+  --text:#c9cdd8;
+  --text-bright:#eceef4;
+  --muted:#4a4f68;
+  --green:#00e5a0;
+  --purple:#9b7dff;
+  --orange:#ff7c4d;
+  --blue:#4dc9ff;
+  --mono:'JetBrains Mono',monospace;
+  --display:'Clash Display',sans-serif;
+}
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:var(--mono);
+  font-size:14px;
+  line-height:1.7;
+  overflow-x:hidden;
+}
+
+/* SCROLLBAR */
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px}
+
+/* NOISE OVERLAY */
+body::before{
+  content:'';
+  position:fixed;inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events:none;z-index:0;opacity:0.4;
+}
+
+/* NAV */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:1rem 3rem;
+  background:rgba(8,10,14,0.85);
+  backdrop-filter:blur(16px);
+  border-bottom:1px solid var(--border);
+}
+.nav-logo{
+  font-family:var(--display);
+  font-size:1.1rem;
+  font-weight:700;
+  color:var(--text-bright);
+  text-decoration:none;
+}
+.nav-logo span{color:var(--green)}
+.nav-links{display:flex;gap:2rem;list-style:none}
+.nav-links a{
+  color:var(--muted);
+  text-decoration:none;
+  font-size:12px;
+  letter-spacing:0.08em;
+  text-transform:uppercase;
+  transition:color 0.2s;
+}
+.nav-links a:hover{color:var(--green)}
+
+/* HERO */
+.hero{
+  min-height:100vh;
+  display:flex;flex-direction:column;justify-content:center;
+  padding:8rem 3rem 4rem;
+  position:relative;
+  overflow:hidden;
+}
+.hero::after{
+  content:'';
+  position:absolute;
+  top:-200px;right:-200px;
+  width:600px;height:600px;
+  background:radial-gradient(circle, rgba(0,229,160,0.04) 0%, transparent 70%);
+  pointer-events:none;
+}
+.hero-tag{
+  display:inline-flex;align-items:center;gap:8px;
+  font-size:11px;letter-spacing:0.12em;text-transform:uppercase;
+  color:var(--green);margin-bottom:1.5rem;
+  opacity:0;animation:fadeUp 0.6s ease 0.1s forwards;
+}
+.hero-tag::before{
+  content:'';display:block;
+  width:24px;height:1px;background:var(--green);
+}
+.hero-name{
+  font-family:var(--display);
+  font-size:clamp(3.5rem,8vw,7rem);
+  font-weight:700;
+  color:var(--text-bright);
+  line-height:1;
+  letter-spacing:-0.02em;
+  margin-bottom:0.5rem;
+  opacity:0;animation:fadeUp 0.6s ease 0.2s forwards;
+}
+.hero-name em{
+  font-style:normal;
+  color:transparent;
+  -webkit-text-stroke:1px rgba(155,125,255,0.6);
+}
+.hero-role{
+  font-size:clamp(1rem,2vw,1.3rem);
+  color:var(--muted);
+  margin-bottom:2rem;
+  opacity:0;animation:fadeUp 0.6s ease 0.3s forwards;
+}
+.hero-role span{color:var(--purple)}
+.hero-desc{
+  max-width:520px;
+  color:var(--text);
+  font-size:13px;
+  line-height:1.8;
+  margin-bottom:3rem;
+  opacity:0;animation:fadeUp 0.6s ease 0.4s forwards;
+}
+.hero-btns{
+  display:flex;gap:1rem;flex-wrap:wrap;
+  opacity:0;animation:fadeUp 0.6s ease 0.5s forwards;
+}
+.btn{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:0.75rem 1.5rem;
+  font-family:var(--mono);font-size:12px;font-weight:700;
+  letter-spacing:0.06em;text-transform:uppercase;
+  text-decoration:none;border-radius:4px;
+  transition:all 0.2s;cursor:pointer;border:none;
+}
+.btn-primary{
+  background:var(--green);color:#080a0e;
+}
+.btn-primary:hover{background:#00c48a;transform:translateY(-2px)}
+.btn-outline{
+  background:transparent;color:var(--text);
+  border:1px solid var(--border2);
+}
+.btn-outline:hover{border-color:var(--purple);color:var(--purple);transform:translateY(-2px)}
+
+/* TERMINAL WIDGET */
+.terminal{
+  position:absolute;right:3rem;bottom:4rem;
+  width:340px;
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:8px;
+  overflow:hidden;
+  opacity:0;animation:fadeUp 0.8s ease 0.7s forwards;
+  display:none;
+}
+@media(min-width:900px){.terminal{display:block}}
+.terminal-bar{
+  display:flex;align-items:center;gap:6px;
+  padding:10px 14px;
+  background:var(--surface2);
+  border-bottom:1px solid var(--border);
+}
+.dot{width:10px;height:10px;border-radius:50%}
+.dot-r{background:#ff5f57}.dot-y{background:#febc2e}.dot-g{background:#28c840}
+.terminal-title{font-size:11px;color:var(--muted);margin-left:8px}
+.terminal-body{padding:1rem 1.25rem;font-size:12px;line-height:1.9}
+.t-muted{color:var(--muted)}
+.t-green{color:var(--green)}
+.t-purple{color:var(--purple)}
+.t-orange{color:var(--orange)}
+.t-blue{color:var(--blue)}
+.cursor{
+  display:inline-block;width:8px;height:14px;
+  background:var(--green);vertical-align:middle;
+  animation:blink 1s step-end infinite;
+}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+
+/* SECTION COMMON */
+section{padding:5rem 3rem;position:relative;z-index:1}
+.section-label{
+  display:flex;align-items:center;gap:12px;
+  font-size:11px;letter-spacing:0.14em;text-transform:uppercase;
+  color:var(--muted);margin-bottom:3rem;
+}
+.section-label::after{
+  content:'';flex:1;max-width:80px;height:1px;
+  background:var(--border2);
+}
+.section-title{
+  font-family:var(--display);
+  font-size:clamp(1.8rem,4vw,2.8rem);
+  font-weight:700;
+  color:var(--text-bright);
+  line-height:1.15;
+  margin-bottom:1rem;
+}
+
+/* SKILLS */
+.skills-grid{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+  gap:1px;background:var(--border);
+  border:1px solid var(--border);border-radius:8px;overflow:hidden;
+}
+.skill-card{
+  background:var(--surface);
+  padding:1.75rem;
+  transition:background 0.2s;
+  position:relative;overflow:hidden;
+}
+.skill-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;
+  height:2px;background:var(--card-accent, var(--green));
+  transform:scaleX(0);transform-origin:left;
+  transition:transform 0.3s;
+}
+.skill-card:hover{background:var(--surface2)}
+.skill-card:hover::before{transform:scaleX(1)}
+.skill-icon{
+  font-size:1.5rem;margin-bottom:1rem;
+  display:flex;align-items:center;gap:8px;
+}
+.skill-name{
+  font-family:var(--display);font-size:1rem;font-weight:600;
+  color:var(--text-bright);margin-bottom:0.5rem;
+}
+.skill-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:0.75rem}
+.tag{
+  font-size:10px;letter-spacing:0.06em;text-transform:uppercase;
+  padding:3px 8px;border-radius:3px;
+  background:var(--surface2);border:1px solid var(--border2);
+  color:var(--muted);
+}
+
+/* PROJECTS */
+.projects-grid{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+  gap:1.5rem;
+}
+.project-card{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:8px;padding:1.75rem;
+  transition:all 0.25s;
+  position:relative;overflow:hidden;
+}
+.project-card:hover{
+  border-color:var(--border2);
+  transform:translateY(-4px);
+}
+.project-number{
+  font-size:10px;letter-spacing:0.1em;
+  color:var(--muted);margin-bottom:0.5rem;
+}
+.project-name{
+  font-family:var(--display);font-size:1.15rem;font-weight:600;
+  color:var(--text-bright);margin-bottom:0.75rem;
+}
+.project-desc{font-size:12px;color:var(--text);line-height:1.8;margin-bottom:1.25rem}
+.project-stack{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:1rem}
+.stack-badge{
+  font-size:10px;padding:2px 8px;border-radius:2px;font-weight:700;
+  letter-spacing:0.04em;
+}
+.badge-green{background:rgba(0,229,160,0.1);color:var(--green);border:1px solid rgba(0,229,160,0.2)}
+.badge-purple{background:rgba(155,125,255,0.1);color:var(--purple);border:1px solid rgba(155,125,255,0.2)}
+.badge-orange{background:rgba(255,124,77,0.1);color:var(--orange);border:1px solid rgba(255,124,77,0.2)}
+.badge-blue{background:rgba(77,201,255,0.1);color:var(--blue);border:1px solid rgba(77,201,255,0.2)}
+.project-type{
+  font-size:10px;letter-spacing:0.1em;text-transform:uppercase;
+  color:var(--muted);margin-top:auto;
+  display:flex;align-items:center;gap:6px;
+}
+.project-type::before{content:'';display:block;width:16px;height:1px;background:currentColor}
+
+/* ABOUT */
+.about-grid{
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:3rem;align-items:start;
+}
+@media(max-width:700px){.about-grid{grid-template-columns:1fr}}
+.about-text p{font-size:13px;line-height:1.9;color:var(--text);margin-bottom:1rem}
+.about-text p span{color:var(--green)}
+.info-table{width:100%;border-collapse:collapse}
+.info-table tr{border-bottom:1px solid var(--border)}
+.info-table td{padding:0.75rem 0;font-size:12px}
+.info-table td:first-child{color:var(--muted);width:40%;letter-spacing:0.06em;text-transform:uppercase;font-size:10px}
+.info-table td:last-child{color:var(--text-bright)}
+
+/* CONTACT */
+.contact-box{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:8px;padding:3rem;text-align:center;
+  position:relative;overflow:hidden;
+}
+.contact-box::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse at center top, rgba(0,229,160,0.05) 0%, transparent 60%);
+  pointer-events:none;
+}
+.contact-box h3{
+  font-family:var(--display);font-size:2rem;font-weight:700;
+  color:var(--text-bright);margin-bottom:0.75rem;
+}
+.contact-box p{font-size:13px;color:var(--muted);margin-bottom:2rem}
+.contact-links{display:flex;justify-content:center;gap:1.5rem;flex-wrap:wrap}
+.contact-link{
+  display:inline-flex;align-items:center;gap:8px;
+  font-size:12px;color:var(--text);text-decoration:none;
+  padding:0.6rem 1.2rem;border:1px solid var(--border2);border-radius:4px;
+  transition:all 0.2s;
+}
+.contact-link:hover{border-color:var(--green);color:var(--green)}
+
+/* FOOTER */
+footer{
+  padding:2rem 3rem;
+  border-top:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;
+  font-size:11px;color:var(--muted);
+}
+
+/* ANIMATIONS */
+@keyframes fadeUp{
+  from{opacity:0;transform:translateY(20px)}
+  to{opacity:1;transform:translateY(0)}
+}
+.reveal{opacity:0;transform:translateY(24px);transition:opacity 0.6s ease,transform 0.6s ease}
+.reveal.visible{opacity:1;transform:none}
+
+/* DIVIDER */
+.divider{height:1px;background:var(--border);margin:0 3rem}
+
+/* MOBILE */
+@media(max-width:600px){
+  nav{padding:1rem 1.5rem}
+  .nav-links{display:none}
+  section{padding:4rem 1.5rem}
+  .hero{padding:7rem 1.5rem 3rem}
+  footer{padding:1.5rem}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="#"><span>//</span> ashmith.dev</a>
+  <ul class="nav-links">
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-tag">Open to internships · 2025</div>
+  <h1 class="hero-name">Ashmith<br><em>Dev &amp; Sec</em></h1>
+  <p class="hero-role">Ethical Hacker · Digital Forensics · <span>Flutter Developer</span></p>
+  <p class="hero-desc">
+    CS undergrad at VESIT with hands-on experience in ethical hacking, digital forensics investigations, 
+    and cross-platform mobile development. I break things to understand them — then build better ones.
+  </p>
+  <div class="hero-btns">
+    <a href="#projects" class="btn btn-primary">View Projects →</a>
+    <a href="#contact" class="btn btn-outline">Get in Touch</a>
+  </div>
+
+  <div class="terminal">
+    <div class="terminal-bar">
+      <div class="dot dot-r"></div>
+      <div class="dot dot-y"></div>
+      <div class="dot dot-g"></div>
+      <span class="terminal-title">ashmith@kali ~ $</span>
+    </div>
+    <div class="terminal-body">
+      <div><span class="t-green">→</span> <span class="t-muted">whoami</span></div>
+      <div><span class="t-purple">ashmith</span> — security &amp; mobile dev</div>
+      <br>
+      <div><span class="t-green">→</span> <span class="t-muted">skills --list</span></div>
+      <div><span class="t-orange">[ pentest, forensics, flutter ]</span></div>
+      <br>
+      <div><span class="t-green">→</span> <span class="t-muted">status --check</span></div>
+      <div><span class="t-blue">seeking internship...</span> <span class="cursor"></span></div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="section-label">// 01 · Skills</div>
+  <h2 class="section-title reveal">What I work with</h2>
+
+  <div class="skills-grid reveal">
+    <div class="skill-card" style="--card-accent:var(--green)">
+      <div class="skill-icon">⚔️</div>
+      <div class="skill-name">Ethical Hacking</div>
+      <p style="font-size:12px;color:var(--muted);margin-top:4px">
+        Web app exploitation, vulnerability assessment, attack simulation on controlled environments.
+      </p>
+      <div class="skill-tags">
+        <span class="tag">Kali Linux</span>
+        <span class="tag">DVWA</span>
+        <span class="tag">SQLi</span>
+        <span class="tag">XSS</span>
+        <span class="tag">Burp Suite</span>
+      </div>
+    </div>
+    <div class="skill-card" style="--card-accent:var(--blue)">
+      <div class="skill-icon">🔬</div>
+      <div class="skill-name">Digital Forensics</div>
+      <p style="font-size:12px;color:var(--muted);margin-top:4px">
+        Evidence acquisition, disk imaging, artifact analysis, and forensic reporting.
+      </p>
+      <div class="skill-tags">
+        <span class="tag">Autopsy</span>
+        <span class="tag">FTK Imager</span>
+        <span class="tag">Wireshark</span>
+        <span class="tag">Log Analysis</span>
+      </div>
+    </div>
+    <div class="skill-card" style="--card-accent:var(--purple)">
+      <div class="skill-icon">📱</div>
+      <div class="skill-name">Mobile Development</div>
+      <p style="font-size:12px;color:var(--muted);margin-top:4px">
+        Cross-platform apps with Flutter and Dart, connected to real-time backends.
+      </p>
+      <div class="skill-tags">
+        <span class="tag">Flutter</span>
+        <span class="tag">Dart</span>
+        <span class="tag">Supabase</span>
+        <span class="tag">Firebase</span>
+        <span class="tag">REST APIs</span>
+      </div>
+    </div>
+    <div class="skill-card" style="--card-accent:var(--orange)">
+      <div class="skill-icon">🧠</div>
+      <div class="skill-name">CS Fundamentals</div>
+      <p style="font-size:12px;color:var(--muted);margin-top:4px">
+        Strong theoretical base across algorithms, OS, AI/ML, and data structures.
+      </p>
+      <div class="skill-tags">
+        <span class="tag">Python</span>
+        <span class="tag">Algorithms</span>
+        <span class="tag">OS</span>
+        <span class="tag">AI/ML</span>
+        <span class="tag">Networks</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="section-label">// 02 · Projects</div>
+  <h2 class="section-title reveal">Things I've built &amp; broken</h2>
+
+  <div class="projects-grid">
+
+    <div class="project-card reveal">
+      <div class="project-number">01</div>
+      <div class="project-name">OMG Connect</div>
+      <p class="project-desc">
+        A gaming café management app featuring real-time session tracking, customer management, billing, 
+        and analytics. Built as a full field project with Flutter and Supabase backend.
+      </p>
+      <div class="project-stack">
+        <span class="stack-badge badge-purple">Flutter</span>
+        <span class="stack-badge badge-purple">Dart</span>
+        <span class="stack-badge badge-blue">Supabase</span>
+        <span class="stack-badge badge-blue">PostgreSQL</span>
+      </div>
+      <div class="project-type">Mobile App · Field Project</div>
+    </div>
+
+    <div class="project-card reveal">
+      <div class="project-number">02</div>
+      <div class="project-name">Pac-Man Clone</div>
+      <p class="project-desc">
+        A recreation of the classic arcade game with ghost AI, collision detection,
+        and score tracking, applying core OOP principles.
+      </p>
+      <div class="project-stack">
+        <span class="stack-badge badge-orange">Java</span>
+      </div>
+      <div class="project-type">Game Development · Personal Project</div>
+    </div>
+
+    <div class="project-card reveal">
+      <div class="project-number">03</div>
+      <div class="project-name">Roblox Game Development</div>
+      <p class="project-desc">
+        Designed and scripted interactive multiplayer games on Roblox, covering
+        game mechanics, player UI, events, and leaderboards.
+      </p>
+      <div class="project-stack">
+        <span class="stack-badge badge-purple">Lua</span>
+        <span class="stack-badge badge-purple">Roblox Studio</span>
+      </div>
+      <div class="project-type">Game Development · Personal Project</div>
+    </div>
+
+    <div class="project-card reveal">
+      <div class="project-number">04</div>
+      <div class="project-name">Linux Security Breach Analysis</div>
+      <p class="project-desc">
+        End-to-end case study on a simulated Linux security incident — covering attack vectors, 
+        forensic evidence collection, timeline reconstruction, and mitigation strategies.
+      </p>
+      <div class="project-stack">
+        <span class="stack-badge badge-green">Kali Linux</span>
+        <span class="stack-badge badge-green">Bash</span>
+        <span class="stack-badge badge-orange">Log Analysis</span>
+      </div>
+      <div class="project-type">Cybersecurity · Case Study</div>
+    </div>
+
+    <div class="project-card reveal">
+      <div class="project-number">05</div>
+      <div class="project-name">DVWA Exploitation Labs</div>
+      <p class="project-desc">
+        Hands-on practice with SQL Injection, XSS, CSRF, file inclusion, and command injection 
+        on the Damn Vulnerable Web Application in a controlled lab environment.
+      </p>
+      <div class="project-stack">
+        <span class="stack-badge badge-green">DVWA</span>
+        <span class="stack-badge badge-orange">SQLi</span>
+        <span class="stack-badge badge-orange">XSS</span>
+        <span class="stack-badge badge-blue">Burp Suite</span>
+      </div>
+      <div class="project-type">Ethical Hacking · Lab Work</div>
+    </div>
+
+    <div class="project-card reveal">
+      <div class="project-number">06</div>
+      <div class="project-name">Digital Forensics Investigation</div>
+      <p class="project-desc">
+        Forensic imaging and artifact recovery using FTK Imager and Autopsy. Documented chain of custody, 
+        extracted deleted files, and produced formal investigation reports.
+      </p>
+      <div class="project-stack">
+        <span class="stack-badge badge-blue">Autopsy</span>
+        <span class="stack-badge badge-blue">FTK Imager</span>
+        <span class="stack-badge badge-green">Forensic Report</span>
+      </div>
+      <div class="project-type">Digital Forensics · Lab Work</div>
+    </div>
+
+    <div class="project-card reveal">
+      <div class="project-number">07</div>
+      <div class="project-name">SecurePass Generator</div>
+      <p class="project-desc">
+        A cryptographically secure password generator with customizable length, character type selection,
+        and a real-time strength indicator. Built as a free tool for Digital Heroes' developer trial task —
+        deployed live and open source.
+      </p>
+      <div class="project-stack">
+        <span class="stack-badge badge-orange">HTML/CSS/JS</span>
+        <span class="stack-badge badge-green">Web Crypto API</span>
+      </div>
+      <div class="project-type">Web Tool · Live Deployment</div>
+      <div style="display:flex;gap:0.75rem;margin-top:1rem">
+        <a href="https://securepass-generator-psi.vercel.app/" target="_blank" style="font-size:11px;color:var(--green);text-decoration:none;border:1px solid rgba(0,229,160,0.3);padding:4px 10px;border-radius:4px;">Live Demo →</a>
+        <a href="https://github.com/Ashcraft30/password-generator" target="_blank" style="font-size:11px;color:var(--purple);text-decoration:none;border:1px solid rgba(155,125,255,0.3);padding:4px 10px;border-radius:4px;">GitHub →</a>
+      </div>
+    </div>
+
+    <div class="project-card reveal" style="border-style:dashed;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;min-height:220px;">
+      <div style="font-size:1.5rem;margin-bottom:0.75rem">🚧</div>
+      <div class="project-name" style="font-size:1rem">More coming soon</div>
+      <p class="project-desc" style="margin-bottom:0">CTF writeups, TryHackMe labs, and new Flutter apps in progress.</p>
+    </div>
+
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="section-label">// 03 · About</div>
+  <h2 class="section-title reveal">A bit about me</h2>
+
+  <div class="about-grid">
+    <div class="about-text reveal">
+      <p>
+        I'm an <span>AI &amp; Data Science undergrad at VESIT</span> with a strong interest in two 
+        seemingly opposite worlds — breaking things (ethically) and building polished mobile apps. 
+        Turns out understanding how systems fail makes you much better at building resilient ones.
+      </p>
+      <p>
+        My cybersecurity work spans ethical hacking methodology, web exploitation techniques, 
+        wireless security, and digital forensics using industry-standard tools. On the dev side, 
+        I build cross-platform mobile apps with <span>Flutter and Supabase</span>, focusing on 
+        clean architecture and real-world usability.
+      </p>
+      <p>
+        I'm a fresher actively looking for internship opportunities where I can contribute, learn fast, 
+        and grow alongside a team that takes security or product seriously.
+      </p>
+    </div>
+    <div class="reveal">
+      <table class="info-table">
+        <tr>
+          <td>Institute</td>
+          <td>VESIT, Mumbai</td>
+        </tr>
+        <tr>
+          <td>Degree</td>
+          <td>B.E. AI &amp; Data Science</td>
+        </tr>
+        <tr>
+          <td>Status</td>
+          <td>Fresher · Open to internships</td>
+        </tr>
+        <tr>
+          <td>Domains</td>
+          <td>Cybersecurity · Mobile Dev</td>
+        </tr>
+        <tr>
+          <td>Tools</td>
+          <td>Kali, Flutter, Autopsy, Burp</td>
+        </tr>
+        <tr>
+          <td>Languages</td>
+          <td>Python, Dart, Bash, SQL</td>
+        </tr>
+        <tr>
+          <td>Location</td>
+          <td>Mumbai, India</td>
+        </tr>
+      </table>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="section-label">// 04 · Contact</div>
+  <div class="contact-box reveal">
+    <h3>Let's work together</h3>
+    <p>Open to internships in ethical hacking, digital forensics, or Flutter development. Reach out!</p>
+    <div class="contact-links">
+      <a href="mailto:ashmithaahirwar.9a.ris@gmail.com" class="contact-link">✉ ashmithaahirwar.9a.ris@gmail.com</a>
+      <a href="https://linkedin.com/in/ashmith-aahirwar-2b99b7338" class="contact-link">in LinkedIn</a>
+      <a href="https://github.com/Ashcraft30" class="contact-link">⌥ GitHub</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <span>// ashmith.dev · 2025</span>
+  <span>Built with raw HTML &amp; CSS</span>
+</footer>
+
+<script>
+const reveals = document.querySelectorAll('.reveal');
+const obs = new IntersectionObserver((entries) => {
+  entries.forEach((e, i) => {
+    if (e.isIntersecting) {
+      setTimeout(() => e.target.classList.add('visible'), i * 80);
+      obs.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.1 });
+reveals.forEach(el => obs.observe(el));
+</script>
+</body>
+</html>
