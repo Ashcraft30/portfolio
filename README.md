@@ -1,5 +1,5 @@
 # Hi, I'm Ashmith 👋
-B.E. student in AI & Data Science at VESIT, Mumbai, focused on **cybersecurity**.
+B.Tech. student in AI & Data Science at VESIT, Mumbai, focused on **cybersecurity**.
 
 ## What I'm working on
 - 🔐 Ethical hacking and penetration testing (TryHackMe, hands-on labs)
