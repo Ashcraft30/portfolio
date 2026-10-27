@@ -16,4 +16,4 @@ B.E. student in AI & Data Science at VESIT, Mumbai, focused on **cybersecurity**
 - *(more coming: see my TryHackMe write-ups)*
 
 ## Links
-TryHackMe: <your profile link> · LinkedIn: <your link>
+TryHackMe: [<your profile link>](https://tryhackme.com/p/2024.ashmith.aahirwar) · LinkedIn: [<your link>](https://www.linkedin.com/in/ashmith-aahirwar-2b99b7338/)
